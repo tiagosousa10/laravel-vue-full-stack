@@ -1,6 +1,26 @@
 <script setup>
 import GuestLayout from "../components/GuestLayout.vue";
+import axiosClient from "../axios.js";
+import {ref} from "vue"
+import router from "../router.js";
+
+
+const data = ref({
+  email: "",
+  password: ""
+})
+
+function submit() {
+  axiosClient.get("sanctum/csrf-cookie").then((response) => {
+    axiosClient.post("/login", data.value).then((response) => {
+      router.push({name: "Home"})
+    });
+  })
+}
+
+
 </script>
+
 
 <template>
   <GuestLayout>
@@ -9,9 +29,11 @@ import GuestLayout from "../components/GuestLayout.vue";
     >
       Sign in to your account
     </h2>
+     <div>
 
+     </div>
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-      <form class="space-y-6" action="#" method="POST">
+      <form @submit.prevent="submit" class="space-y-6" >
         <div>
           <label for="email" class="block text-sm/6 font-medium text-gray-900"
             >Email address</label
@@ -23,6 +45,7 @@ import GuestLayout from "../components/GuestLayout.vue";
               id="email"
               autocomplete="email"
               required=""
+              v-model="data.email"
               class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
             />
           </div>
@@ -43,6 +66,7 @@ import GuestLayout from "../components/GuestLayout.vue";
               id="password"
               autocomplete="current-password"
               required=""
+              v-model="data.password"
               class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
             />
           </div>

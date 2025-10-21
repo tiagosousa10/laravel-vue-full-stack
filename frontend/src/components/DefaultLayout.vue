@@ -153,6 +153,8 @@ import {
   MenuItems,
 } from "@headlessui/vue";
 import { Bars3Icon, XMarkIcon } from "@heroicons/vue/24/outline";
+import axiosClient from "../axios.js";
+import router from "../router.js";
 
 const user = {
   name: "Tom Cook",
@@ -166,7 +168,9 @@ const navigation = [
 ];
 
 function logout() {
-  console.log("logout");
+  axiosClient.post("/logout").then((response) => {
+    router.push({name: "Login"})
+  })
 }
 </script>
 
