@@ -1,9 +1,9 @@
-<template>
-  <div>Login</div>
-</template>
-
-<script>
-export default {};
+<script setup>
+import GuestLayout from "../components/GuestLayout.vue";
 </script>
 
-<style lang="scss" scoped></style>
+<template>
+  <GuestLayout> Login </GuestLayout>
+</template>
+
+<style scoped></style>

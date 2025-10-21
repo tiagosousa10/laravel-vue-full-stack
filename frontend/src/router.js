@@ -4,6 +4,7 @@ import MyImages from "./pages/MyImages.vue";
 import Home from "./pages/Home.vue";
 import Login from "./pages/Login.vue";
 import Signup from "./pages/Signup.vue";
+import NotFound from "./pages/NotFound.vue";
 
 const routes = [
   {
@@ -31,6 +32,11 @@ const routes = [
     path: "/signup",
     name: "Signup",
     component: Signup,
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "not-found",
+    component: NotFound,
   },
 ];
 
