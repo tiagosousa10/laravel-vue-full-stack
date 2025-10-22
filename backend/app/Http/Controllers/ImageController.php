@@ -28,7 +28,20 @@ class ImageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'image' => ['required', 'file', 'image', 'mimes:jpeg,png,jpg'],
+            'label' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        $path = $request->file('image')->store('public/images', 'public');
+
+        $image = Image::create([
+            'path' => $path,
+            'label' => $request->label,
+        ]);
+
+        return response($image, 201);
+
     }
 
     /**
@@ -36,6 +49,8 @@ class ImageController extends Controller
      */
     public function destroy(Image $image)
     {
-        //
+        $image->delete();
+
+        return response(null, 204);
     }
 }
