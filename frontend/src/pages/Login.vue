@@ -1,26 +1,30 @@
 <script setup>
 import GuestLayout from "../components/GuestLayout.vue";
 import axiosClient from "../axios.js";
-import {ref} from "vue"
+import { ref } from "vue";
 import router from "../router.js";
-
 
 const data = ref({
   email: "",
-  password: ""
-})
+  password: "",
+});
+
+const errorMessage = ref("");
 
 function submit() {
   axiosClient.get("sanctum/csrf-cookie").then((response) => {
-    axiosClient.post("/login", data.value).then((response) => {
-      router.push({name: "Home"})
-    });
-  })
+    axiosClient
+      .post("/login", data.value)
+      .then((response) => {
+        router.push({ name: "Home" });
+      })
+      .catch((error) => {
+        console.log(error.response);
+        errorMessage.value = error.response.data.message;
+      });
+  });
 }
-
-
 </script>
-
 
 <template>
   <GuestLayout>
@@ -29,11 +33,16 @@ function submit() {
     >
       Sign in to your account
     </h2>
-     <div>
 
-     </div>
-    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-      <form @submit.prevent="submit" class="space-y-6" >
+    <div
+      v-if="errorMessage"
+      class="mt-4 py-2 px-3 rounded text-white bg-red-400"
+    >
+      {{ errorMessage }}
+    </div>
+
+    <div class="mt-4 sm:mx-auto sm:w-full sm:max-w-sm">
+      <form @submit.prevent="submit" class="space-y-6">
         <div>
           <label for="email" class="block text-sm/6 font-medium text-gray-900"
             >Email address</label
