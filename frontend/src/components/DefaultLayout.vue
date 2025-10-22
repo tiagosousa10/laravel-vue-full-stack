@@ -50,9 +50,10 @@
                   <span class="sr-only">Open user menu</span>
                   <img
                     class="size-8 rounded-full outline -outline-offset-1 outline-white/10"
-                    :src="user.imageUrl"
+                    src="https://randomuser.me/api/portraits/lego/1.jpg"
                     alt=""
                   />
+                  <span class="text-white ml-3">{{ user.name }}</span>
                 </MenuButton>
 
                 <transition
@@ -114,7 +115,7 @@
             <div class="shrink-0">
               <img
                 class="size-10 rounded-full outline -outline-offset-1 outline-white/10"
-                :src="user.imageUrl"
+                src="https://randomuser.me/api/portraits/lego/1.jpg"
                 alt=""
               />
             </div>

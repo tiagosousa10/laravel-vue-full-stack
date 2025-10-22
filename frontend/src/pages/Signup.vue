@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import GuestLayout from "../components/GuestLayout.vue";
 import axiosClient from "../axios";
+import router from "../router";
 
 const data = ref({
   name: "",
@@ -10,16 +11,29 @@ const data = ref({
   password_confirmation: "",
 });
 
+const errors = ref({
+  name: [],
+  email: [],
+  password: [],
+});
+
 function submit() {
   axiosClient.get("sanctum/csrf-cookie").then((response) => {
-    axiosClient.post("/register", data.value);
+    axiosClient
+      .post("/register", data.value)
+      .then((response) => {
+        router.push({ name: "Home" });
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+        errors.value = error.response.data.errors;
+      });
   });
 }
 </script>
 
 <template>
   <GuestLayout>
-    <pre>{{ data }}</pre>
     <h2
       class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900"
     >
@@ -37,10 +51,12 @@ function submit() {
             <input
               name="name"
               id="name"
-              required=""
               v-model="data.name"
               class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
             />
+            <p class="text-sm mt-1 text-red-600">
+              {{ errors.name ? errors.name[0] : "" }}
+            </p>
           </div>
         </div>
 
@@ -56,9 +72,11 @@ function submit() {
               id="email"
               autocomplete="email"
               v-model="data.email"
-              required=""
               class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
             />
+            <p class="text-sm mt-1 text-red-600">
+              {{ errors.email ? errors.email[0] : "" }}
+            </p>
           </div>
         </div>
 
@@ -76,10 +94,12 @@ function submit() {
               type="password"
               name="password"
               id="password"
-              required=""
               v-model="data.password"
               class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
             />
+            <p class="text-sm mt-1 text-red-600">
+              {{ errors.password ? errors.password[0] : "" }}
+            </p>
           </div>
         </div>
         <!-- Confirm Password -->
@@ -96,7 +116,6 @@ function submit() {
               type="password"
               name="password"
               id="passwordConfirmation"
-              required=""
               v-model="data.password_confirmation"
               class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
             />
