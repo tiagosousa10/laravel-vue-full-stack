@@ -1,3 +1,17 @@
+<script setup>
+import { onMounted, ref } from "vue";
+import axiosClient from "../axios";
+
+const images = ref([]);
+
+onMounted(() => {
+  axiosClient.get("/api/image").then((response) => {
+    console.log(response.data);
+    images.value = response.data;
+  });
+});
+</script>
+
 <template>
   <div>
     <header
@@ -50,14 +64,5 @@
     </main>
   </div>
 </template>
-
-<script setup>
-const images = [
-  { id: 1, label: "Test", url: "http://localhost" },
-  { id: 2, label: "Test", url: "http://localhost" },
-  { id: 3, label: "Test", url: "http://localhost" },
-  { id: 4, label: "Test", url: "http://localhost" },
-];
-</script>
 
 <style lang="scss" scoped></style>

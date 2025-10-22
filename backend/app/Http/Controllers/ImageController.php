@@ -13,11 +13,12 @@ class ImageController extends Controller
      */
     public function index()
     {
-        return Image::all()
+        return Image::latest()
+            ->get()
             ->map(function ($image) {
                 return [
                     'id' => $image->id,
-                    'url' => url(Storage::url($image->url)),
+                    'url' => url(Storage::url($image->path)),
                     'label' => $image->label,
                 ];
             });
@@ -33,7 +34,7 @@ class ImageController extends Controller
             'label' => ['nullable', 'string', 'max:255'],
         ]);
 
-        $path = $request->file('image')->store('public/images', 'public');
+        $path = $request->file('image')->store('images', 'public');
 
         $image = Image::create([
             'path' => $path,
@@ -41,7 +42,6 @@ class ImageController extends Controller
         ]);
 
         return response($image, 201);
-
     }
 
     /**
