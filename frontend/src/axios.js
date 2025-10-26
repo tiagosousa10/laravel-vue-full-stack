@@ -3,14 +3,13 @@ import router from "./router";
 
 const axiosClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  // withCredentials: true,
-  // withXSRFToken: true,
+  withCredentials: true,
+  withXSRFToken: true,
 });
 
-axiosClient.interceptors.request.use((config) => {
-  config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
-  return config;
-});
+// axiosClient.interceptors.request.use((config) => {
+//   config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
+// });
 
 axiosClient.interceptors.response.use(
   (response) => {

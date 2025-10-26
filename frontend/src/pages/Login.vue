@@ -16,7 +16,6 @@ function submit() {
     axiosClient
       .post("/login", data.value)
       .then((response) => {
-        localStorage.setItem("token", response.data.token);
         router.push({ name: "Home" });
       })
       .catch((error) => {
